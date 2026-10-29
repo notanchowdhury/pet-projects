@@ -11,13 +11,13 @@ services:
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-bewerbung}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-bewerbung_pw}
-      POSTGRES_DB: ${POSTGRES_DB:-bewerbung}
+      POSTGRES_USER: ${POSTGRES_USER:-jobpilot}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-jobpilot_pw}
+      POSTGRES_DB: ${POSTGRES_DB:-jobpilot}
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-bewerbung} -d ${POSTGRES_DB:-bewerbung}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-jobpilot} -d ${POSTGRES_DB:-jobpilot}"]
       interval: 5s
       timeout: 5s
       retries: 12
@@ -38,7 +38,7 @@ services:
       # These override anything in .env for the containerized run:
       PORT: 3000
       NODE_ENV: production
-      DATABASE_URL: postgresql://${POSTGRES_USER:-bewerbung}:${POSTGRES_PASSWORD:-bewerbung_pw}@db:5432/${POSTGRES_DB:-bewerbung}?schema=public
+      DATABASE_URL: postgresql://${POSTGRES_USER:-jobpilot}:${POSTGRES_PASSWORD:-jobpilot_pw}@db:5432/${POSTGRES_DB:-jobpilot}?schema=public
     ports:
       - "${PORT:-3000}:3000"
     healthcheck:

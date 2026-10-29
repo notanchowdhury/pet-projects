@@ -29,6 +29,6 @@ export async function sendMail({ to, subject, text }) {
     console.log('───────────────────────────────────────────────────────────────\n');
     return { delivered: false };
   }
-  await t.sendMail({ from: process.env.SMTP_FROM || 'no-reply@bewerbungs-helfer.local', to, subject, text });
+  await t.sendMail({ from: process.env.SMTP_FROM || 'no-reply@jobpilot-germany.local', to, subject, text });
   return { delivered: true };
 }

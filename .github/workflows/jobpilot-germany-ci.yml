@@ -1,19 +1,19 @@
-name: bewerbungs-helfer CI
+name: jobpilot-germany CI
 
 on:
   push:
     branches: [main]
     paths:
-      - 'bewerbungs-helfer/**'
-      - '.github/workflows/bewerbungs-helfer-*.yml'
+      - 'jobpilot-germany/**'
+      - '.github/workflows/jobpilot-germany-*.yml'
   pull_request:
     paths:
-      - 'bewerbungs-helfer/**'
-      - '.github/workflows/bewerbungs-helfer-*.yml'
+      - 'jobpilot-germany/**'
+      - '.github/workflows/jobpilot-germany-*.yml'
 
 defaults:
   run:
-    working-directory: bewerbungs-helfer
+    working-directory: jobpilot-germany
 
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-          cache-dependency-path: bewerbungs-helfer/package-lock.json
+          cache-dependency-path: jobpilot-germany/package-lock.json
 
       - run: npm ci
       - run: npm run setup
@@ -46,4 +46,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build image
-        run: docker build -t bewerbungs-helfer .
+        run: docker build -t jobpilot-germany .

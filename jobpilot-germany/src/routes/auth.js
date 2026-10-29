@@ -92,7 +92,7 @@ router.post('/forgot', authLimiter, async (req, res) => {
     try {
       await sendMail({
         to: email,
-        subject: 'Reset your Bewerbungs-Helfer password',
+        subject: 'Reset your JobPilot Germany password',
         text: `Someone requested a password reset for your account.\n\nOpen this link to choose a new password (valid for 1 hour):\n${url}\n\nIf you didn't request this, you can ignore this email — your password stays unchanged.`
       });
     } catch (e) {

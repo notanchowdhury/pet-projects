@@ -1,4 +1,4 @@
-# Bewerbungs-Helfer — German Job Application Tailor
+# JobPilot Germany — German Job Application Tailor
 
 A production-ready web app that helps you land a German software engineering role by solving the two real blockers: **German-language job ads** and **a résumé that isn't tuned to each circular.**
 
@@ -44,7 +44,7 @@ public/                  index.html, styles.css, app.js  (the SPA)
 ```bash
 # 0. Get the code (this project lives in the pet-projects monorepo)
 git clone https://github.com/notanchowdhury/pet-projects.git
-cd pet-projects/bewerbungs-helfer
+cd pet-projects/jobpilot-germany
 
 # 1. Install
 npm install

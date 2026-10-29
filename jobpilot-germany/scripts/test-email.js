@@ -15,7 +15,7 @@ if (!to) {
 try {
   const r = await sendMail({
     to,
-    subject: 'Bewerbungs-Helfer — SMTP test',
+    subject: 'JobPilot Germany — SMTP test',
     text: 'If you can read this, your SMTP settings work. ✅'
   });
   console.log(r.delivered ? `✓ Sent via SMTP to ${to}` : '⚠ SMTP not configured — the message was logged to the console instead.');
