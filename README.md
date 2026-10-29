@@ -7,6 +7,7 @@ Small, self-contained projects I build to explore languages, frameworks and idea
 | Project | Description | Stack |
 | --- | --- | --- |
 | [speedtest-dotnet](speedtest-dotnet/) | Self-hosted network speed test server (latency, download, upload) in a single executable. A port of a Go project to .NET. | C#, .NET 10, ASP.NET Core |
+| [bewerbungs-helfer](bewerbungs-helfer/) | Tailors a résumé and cover letter to German job ads: translates the ad, extracts requirements, scores fit and tracks applications. Users bring their own Claude / OpenAI / Gemini API key. | Node.js, Express, Prisma, PostgreSQL / SQLite, Docker |
 
 ## Repository layout
 

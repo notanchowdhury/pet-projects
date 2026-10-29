@@ -1,0 +1,14 @@
+node_modules/
+.env
+*.db
+*.db-journal
+prisma/dev.db*
+dist/
+.DS_Store
+npm-debug.log*
+.env.*
+!.env.example
+*.pdf
+*.docx
+uploads/
+coverage/

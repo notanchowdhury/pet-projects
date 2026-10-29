@@ -1,0 +1,17 @@
+node_modules
+npm-debug.log*
+.git
+.gitignore
+.env
+*.db
+*.db-journal
+prisma/dev.db*
+# Exclude the SQLite dev migrations only. The Postgres migrations
+# (prisma/postgres/migrations) MUST ship in the image for `migrate deploy`.
+/prisma/migrations
+Dockerfile
+.dockerignore
+README.md
+STACK_AND_SCALING.md
+*.pdf
+test/

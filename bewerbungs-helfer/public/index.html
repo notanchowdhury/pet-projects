@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bewerbungs-Helfer — German Job Application Tailor</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<!-- ============ LANDING ============ -->
+<div class="landing" id="landing">
+  <header class="lp-nav">
+    <div class="lp-brand">Bewerbungs-Helfer</div>
+    <div class="lp-nav-actions">
+      <button class="btn neutral sm" id="lpLogin">Log in</button>
+      <button class="btn sm" id="lpSignup">Sign up</button>
+    </div>
+  </header>
+
+  <section class="lp-hero">
+    <span class="lp-eyebrow">For software engineers targeting Germany 🇩🇪</span>
+    <h1>Land a German software job without the language barrier.</h1>
+    <p>Paste any job ad — even in Deutsch. Get it translated, understand the real requirements, see how well you fit, and generate a tailored résumé and a proper German <em>Anschreiben</em> in seconds.</p>
+    <div class="lp-cta">
+      <button class="btn" id="lpGetStarted">Get started — it's free</button>
+      <button class="btn neutral" id="lpLogin2">I already have an account</button>
+    </div>
+  </section>
+
+  <section class="lp-features">
+    <div class="lp-card"><div class="lp-ic">🌐</div><h3>Translate any Stellenanzeige</h3><p>German original and clean English side by side — the boilerplate stops hiding the real job.</p></div>
+    <div class="lp-card"><div class="lp-ic">🎯</div><h3>Extract the real requirements</h3><p>Must-haves, nice-to-haves, tech stack, seniority, and a clear flag on the German-language requirement.</p></div>
+    <div class="lp-card"><div class="lp-ic">📊</div><h3>Honest fit score</h3><p>A 0–100 match against your résumé with evidence and gaps — so you know whether to even apply.</p></div>
+    <div class="lp-card"><div class="lp-ic">✍️</div><h3>Tailored résumé &amp; cover letter</h3><p>ATS-safe résumé plus a formal Anschreiben. Never fabricated — built only from your real experience.</p></div>
+  </section>
+
+  <section class="lp-how">
+    <h2>How it works</h2>
+    <div class="lp-steps">
+      <div class="lp-step"><span class="lp-n">1</span> Sign up and choose your AI: the built-in model, or your own API key.</div>
+      <div class="lp-step"><span class="lp-n">2</span> Save your master résumé once.</div>
+      <div class="lp-step"><span class="lp-n">3</span> Paste a job ad → translate, extract, check fit.</div>
+      <div class="lp-step"><span class="lp-n">4</span> Generate &amp; export your tailored documents. Track every application.</div>
+    </div>
+    <div class="lp-cta" style="margin-top:26px;"><button class="btn" id="lpGetStarted2">Create your free account</button></div>
+  </section>
+
+  <footer class="lp-foot">Your data stays in your account. AI calls use the key you choose. Built for the German job hunt.</footer>
+</div>
+
+<!-- ============ AUTH SCREEN ============ -->
+<div class="auth-wrap hidden" id="authScreen">
+  <div class="auth-card">
+    <button class="lp-back" id="authBack">← Back to home</button>
+    <h1>Bewerbungs-Helfer</h1>
+    <p class="tag">Sign in to tailor your applications for the German job market.</p>
+    <div id="loginPanel">
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Log in</button>
+        <button class="auth-tab" data-tab="signup">Sign up</button>
+      </div>
+      <form id="authForm">
+        <div class="field" id="nameField" style="display:none;">
+          <label for="authName">Name (optional)</label>
+          <input type="text" id="authName" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="authEmail">Email</label>
+          <input type="email" id="authEmail" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="authPassword">Password</label>
+          <input type="password" id="authPassword" autocomplete="current-password" required>
+        </div>
+        <button class="btn" type="submit" id="authSubmit">Log in</button>
+        <div class="auth-err" id="authErr"></div>
+      </form>
+      <button class="lp-back" id="forgotLink" type="button" style="margin-top:10px;">Forgot password?</button>
+    </div>
+    <div id="forgotPanel" class="hidden">
+      <p class="tag">Enter your account email and we'll send a reset link.</p>
+      <form id="forgotForm">
+        <div class="field">
+          <label for="forgotEmail">Email</label>
+          <input type="email" id="forgotEmail" autocomplete="email" required>
+        </div>
+        <button class="btn" type="submit">Send reset link</button>
+        <div class="auth-err" id="forgotMsg"></div>
+      </form>
+      <button class="lp-back" id="forgotBack" type="button" style="margin-top:10px;">← Back to login</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ RESET PASSWORD ============ -->
+<div class="auth-wrap hidden" id="resetScreen">
+  <div class="auth-card">
+    <h1>Set a new password</h1>
+    <p class="tag">Choose a new password for your account.</p>
+    <form id="resetForm">
+      <div class="field">
+        <label for="resetPw">New password</label>
+        <input type="password" id="resetPw" autocomplete="new-password" required>
+      </div>
+      <button class="btn" type="submit">Update password</button>
+      <div class="auth-err" id="resetMsg"></div>
+    </form>
+    <button class="lp-back" id="resetToLogin" type="button" style="margin-top:10px;">← Back to login</button>
+  </div>
+</div>
+
+<!-- ============ ONBOARDING (choose AI) ============ -->
+<div class="auth-wrap hidden" id="onboarding">
+  <div class="auth-card" style="max-width:520px;">
+    <h1>One quick choice</h1>
+    <p class="tag">How should the AI features work for you? You can change this anytime in <strong>Account</strong>.</p>
+    <div id="onboardAi"></div>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div class="app hidden" id="appRoot">
+  <aside class="sidebar">
+    <div class="brand">
+      <h1>Bewerbungs-Helfer</h1>
+      <p>DE job-application tailor</p>
+    </div>
+    <button class="nav-btn active" data-view="apply"><span class="ico">✍️</span> <span>New Application</span></button>
+    <button class="nav-btn" data-view="resume"><span class="ico">📄</span> <span>Master Résumé</span></button>
+    <button class="nav-btn" data-view="tracker"><span class="ico">📊</span> <span>Tracker</span></button>
+    <button class="nav-btn" data-view="account"><span class="ico">👤</span> <span>Account</span> <span class="status-dot" id="llmDot"></span></button>
+    <button class="nav-btn hidden" id="navAdmin" data-view="admin"><span class="ico">🛡️</span> <span>Admin</span></button>
+    <div class="nav-spacer"></div>
+    <div class="who" id="whoBox"></div>
+    <button class="theme-toggle" id="themeToggle">◐ Theme</button>
+  </aside>
+
+  <main class="main">
+
+    <!-- APPLY -->
+    <section class="view active" id="view-apply">
+      <h2 class="title">New Application</h2>
+      <p class="subtitle">Paste a job ad (Stellenanzeige) in any language. Translate → extract requirements → check fit → tailor.</p>
+
+      <div class="steps" id="applySteps">
+        <div class="step current" data-s="1"><span class="n">1</span> Paste JD</div>
+        <div class="step" data-s="2"><span class="n">2</span> Translate &amp; extract</div>
+        <div class="step" data-s="3"><span class="n">3</span> Fit check</div>
+        <div class="step" data-s="4"><span class="n">4</span> Tailor</div>
+      </div>
+
+      <div class="card" id="apply-s1">
+        <h3>Job description</h3>
+        <p class="hint">Paste the full ad — including the German legal/boilerplate; the tool separates the real requirements.</p>
+        <div class="field"><textarea id="jdInput" rows="12" placeholder="Stellenbeschreibung / job description..."></textarea></div>
+        <div class="btn-row">
+          <button class="btn" id="analyzeBtn">Translate &amp; extract requirements</button>
+          <button class="btn neutral" id="resetApply">Reset</button>
+        </div>
+      </div>
+
+      <div class="card" id="apply-s2" style="display:none;">
+        <div class="btn-row" style="justify-content:space-between; margin-bottom:12px;">
+          <h3 style="margin:0;">Translation &amp; requirements</h3>
+          <div><span class="badge neu" id="langBadge"></span> <span class="badge" id="langReqBadge"></span></div>
+        </div>
+        <div class="split">
+          <div><div class="k-label">Original</div><div class="out-block" id="origText"></div></div>
+          <div><div class="k-label">English</div><div class="out-block" id="enText"></div></div>
+        </div>
+        <div class="row" style="margin-top:16px;">
+          <div class="field"><div class="kv"><div class="k">Company</div><div id="exCompany"></div></div></div>
+          <div class="field"><div class="kv"><div class="k">Role</div><div id="exRole"></div></div></div>
+          <div class="field"><div class="kv"><div class="k">Seniority</div><div id="exSeniority"></div></div></div>
+        </div>
+        <div class="field"><div class="k-label">Must-haves</div><div class="chip-list" id="exMust"></div></div>
+        <div class="field"><div class="k-label">Nice-to-haves</div><div class="chip-list" id="exNice"></div></div>
+        <div class="field"><div class="k-label">Tech stack</div><div class="chip-list" id="exTech"></div></div>
+        <div class="note" id="langNote" style="margin-bottom:14px;"></div>
+        <button class="btn" id="fitBtn">Check fit against my résumé →</button>
+      </div>
+
+      <div class="card" id="apply-s3" style="display:none;">
+        <h3 style="margin-bottom:14px;">Compatibility</h3>
+        <div class="scorebox" style="margin-bottom:18px;">
+          <div class="score-ring" id="scoreRing">—</div>
+          <div>
+            <div id="verdictText" style="font-weight:600;font-size:16px;"></div>
+            <div id="recoText" style="color:var(--muted);font-size:13.5px;margin-top:2px;"></div>
+          </div>
+        </div>
+        <div class="split">
+          <div><div class="k-label" style="color:var(--ok);">✓ Matched</div><ul class="match-list" id="matchList"></ul></div>
+          <div><div class="k-label" style="color:var(--bad);">△ Gaps</div><ul class="gaps-list" id="gapList"></ul></div>
+        </div>
+        <div class="field" style="margin-top:16px;">
+          <label for="userNotes">Notes for tailoring (optional)</label>
+          <textarea id="userNotes" rows="3" placeholder="e.g. 'I actually used Terraform at project X, just not on the résumé' — anything the tailor should honestly incorporate. Do NOT invent experience you don't have."></textarea>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="coverLang">Cover letter language</label>
+            <select id="coverLang"><option value="de">German (Anschreiben)</option><option value="en">English</option></select>
+          </div>
+          <div class="field">
+            <label for="tone">Tone</label>
+            <select id="tone"><option value="formal">Formal (German-standard)</option><option value="warm">Warm but professional</option></select>
+          </div>
+        </div>
+        <button class="btn" id="tailorBtn">Tailor résumé &amp; cover letter →</button>
+      </div>
+
+      <div class="card" id="apply-s4" style="display:none;">
+        <div class="btn-row" style="justify-content:space-between;">
+          <h3 style="margin:0;">Tailored documents</h3>
+          <button class="btn ghost sm" id="saveToTracker">Save to tracker</button>
+        </div>
+        <div class="field" style="margin-top:14px;">
+          <div class="btn-row" style="justify-content:space-between;">
+            <label style="margin:0;">Tailored résumé</label>
+            <div>
+              <button class="btn neutral sm" data-copy="tailoredResumeOut">Copy</button>
+              <button class="btn neutral sm" data-pdf="tailoredResumeOut" data-name="resume">PDF</button>
+              <button class="btn neutral sm" data-docx="tailoredResumeOut" data-name="resume">Word</button>
+              <button class="btn neutral sm" data-dl="tailoredResumeOut" data-name="resume">.md</button>
+            </div>
+          </div>
+          <div class="out-block" id="tailoredResumeOut" style="margin-top:8px;"></div>
+        </div>
+        <div class="field">
+          <div class="btn-row" style="justify-content:space-between;">
+            <label style="margin:0;">Cover letter</label>
+            <div>
+              <button class="btn neutral sm" data-copy="coverLetterOut">Copy</button>
+              <button class="btn neutral sm" data-pdf="coverLetterOut" data-name="cover-letter">PDF</button>
+              <button class="btn neutral sm" data-docx="coverLetterOut" data-name="cover-letter">Word</button>
+              <button class="btn neutral sm" data-dl="coverLetterOut" data-name="cover-letter">.md</button>
+            </div>
+          </div>
+          <div class="out-block" id="coverLetterOut" style="margin-top:8px;"></div>
+        </div>
+        <div class="field"><div class="k-label">ATS-safety notes</div><ul class="match-list" id="atsList"></ul></div>
+      </div>
+    </section>
+
+    <!-- MASTER RESUME -->
+    <section class="view" id="view-resume">
+      <h2 class="title">Master Résumé</h2>
+      <p class="subtitle">Your single source of truth. Every tailoring run works off <strong>this</strong> — never off a previously tailored version — so you never get drift.</p>
+      <div class="card">
+        <h3>Your résumé</h3>
+        <p class="hint">Paste the text, or upload a file (.txt / .md / .pdf / .docx). PDF/DOCX text is extracted in-browser.</p>
+        <div class="field">
+          <textarea id="masterResume" class="mono" rows="16" placeholder="Paste your full résumé here — skills, experience, projects, education, languages..."></textarea>
+        </div>
+        <div class="btn-row">
+          <button class="btn" id="saveResume">Save master résumé</button>
+          <label class="btn neutral sm" style="cursor:pointer;">Upload file <input type="file" id="resumeFile" accept=".txt,.md,.pdf,.docx" style="display:none;"></label>
+          <span id="resumeStatus" style="font-size:13px; color:var(--muted);"></span>
+        </div>
+        <div id="heldFileRow" class="note" style="display:none; margin-top:12px;"></div>
+      </div>
+    </section>
+
+    <!-- TRACKER -->
+    <section class="view" id="view-tracker">
+      <h2 class="title">Application Tracker</h2>
+      <p class="subtitle">Everything you've analysed, in one place — so nothing gets lost across the language barrier.</p>
+
+      <div class="card tracker-toolbar">
+        <div class="field" style="flex:2;min-width:200px;margin:0;">
+          <input type="text" id="trkSearch" placeholder="Search company or role…">
+        </div>
+        <div class="field" style="min-width:150px;margin:0;">
+          <select id="trkStatusFilter"><option value="">All statuses</option></select>
+        </div>
+        <div class="field" style="min-width:170px;margin:0;">
+          <select id="trkSort">
+            <option value="date-desc">Newest first</option>
+            <option value="date-asc">Oldest first</option>
+            <option value="score-desc">Fit score: high → low</option>
+            <option value="score-asc">Fit score: low → high</option>
+            <option value="company-asc">Company A → Z</option>
+          </select>
+        </div>
+        <div class="view-switch" id="trkViewSwitch">
+          <button class="active" data-view="table" type="button">☰ Table</button>
+          <button data-view="board" type="button">▤ Board</button>
+        </div>
+        <button class="btn neutral sm" id="trkExportCsv" type="button">⬇ CSV</button>
+      </div>
+
+      <div class="card" style="padding:0;" id="trackerTableCard">
+        <div class="table-wrap">
+          <table id="trackerTable">
+            <thead><tr><th>Date</th><th>Company</th><th>Role</th><th>Lang</th><th>Fit</th><th>Status</th><th>Follow-up</th><th></th></tr></thead>
+            <tbody id="trackerBody"></tbody>
+          </table>
+        </div>
+        <div class="empty" id="trackerEmpty">No applications yet. Analyse a job ad and hit "Save to tracker".</div>
+      </div>
+
+      <div class="kanban" id="trackerBoard" style="display:none;"></div>
+    </section>
+
+    <!-- ACCOUNT -->
+    <section class="view" id="view-account">
+      <h2 class="title">Account</h2>
+      <p class="subtitle">Your session and the service status.</p>
+      <div class="card">
+        <h3>Signed in</h3>
+        <div class="kv" style="margin-top:10px;">
+          <div class="k">Email</div><div id="accEmail" style="margin-bottom:10px;"></div>
+          <div class="k">Role</div><div id="accRole" style="margin-bottom:14px;"></div>
+        </div>
+        <button class="btn neutral" id="logoutBtn">Log out</button>
+      </div>
+      <div class="card">
+        <h3>Change password</h3>
+        <form id="changePwForm">
+          <div class="field"><label for="curPw">Current password</label><input type="password" id="curPw" autocomplete="current-password"></div>
+          <div class="field"><label for="newPw">New password (min 8 chars)</label><input type="password" id="newPw" autocomplete="new-password"></div>
+          <div class="btn-row"><button class="btn" type="submit">Update password</button><span id="changePwMsg" style="font-size:13px;"></span></div>
+        </form>
+      </div>
+      <div class="card">
+        <h3>AI model</h3>
+        <p class="hint">Use the app's built-in AI, or your own API key. Your résumé is sent to the chosen model only when you run an action.</p>
+        <div id="accountAi"></div>
+      </div>
+      <div class="card" id="adminCard" style="display:none;">
+        <h3>Administrator</h3>
+        <p class="hint">You are an admin. Use the <strong>🛡️ Admin</strong> tab to manage users and see usage. The shared LLM key is set via the server's <code>LLM_API_KEY</code> environment variable.</p>
+      </div>
+    </section>
+
+    <!-- ADMIN -->
+    <section class="view" id="view-admin">
+      <h2 class="title">Admin</h2>
+      <p class="subtitle">Manage users and see usage across the shared service. Résumé and application <em>content</em> stays private — only counts are shown.</p>
+      <div class="card" id="adminStats"><div class="empty">Loading…</div></div>
+      <div class="card" style="padding:0;">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Email</th><th>Name</th><th>Role</th><th>AI</th><th>Apps</th><th>Résumé</th><th>Joined</th><th></th></tr></thead>
+            <tbody id="adminBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Résumé viewer (admin) -->
+<div class="modal-overlay hidden" id="resumeModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="rmTitle">Résumé</h3>
+      <button class="btn danger sm" id="rmClose">✕ Close</button>
+    </div>
+    <div id="rmMeta" style="font-size:12px;color:var(--muted);margin-bottom:8px;"></div>
+    <div class="out-block" id="rmBody" style="max-height:60vh;"></div>
+    <div class="btn-row" style="margin-top:12px;">
+      <button class="btn neutral sm" id="rmDownload" style="display:none;"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Application notes / follow-up editor -->
+<div class="modal-overlay hidden" id="appEditModal">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-head">
+      <h3 id="appEditTitle">Edit application</h3>
+      <button class="btn danger sm" id="appEditClose">✕ Close</button>
+    </div>
+    <div class="field">
+      <label for="appEditFollowUp">Follow up on</label>
+      <input type="date" id="appEditFollowUp">
+    </div>
+    <div class="field">
+      <label for="appEditNotes">Notes</label>
+      <textarea id="appEditNotes" rows="6" placeholder="e.g. Recruiter call scheduled, interviewer names, salary talk points…"></textarea>
+    </div>
+    <div class="btn-row">
+      <button class="btn" id="appEditSave">Save</button>
+      <span id="appEditMsg" style="font-size:13px;"></span>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="/app.js"></script>
+</body>
+</html>

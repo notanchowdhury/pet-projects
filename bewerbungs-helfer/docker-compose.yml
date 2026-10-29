@@ -1,0 +1,52 @@
+# Full stack: PostgreSQL (with a persistent named volume) + the app.
+#   1. cp .env.example .env   and fill in JWT_SECRET / LLM_* (and POSTGRES_PASSWORD)
+#   2. docker compose up --build
+#   3. open http://localhost:3000
+#
+# Data persists in the `pgdata` volume across restarts/rebuilds. `docker compose down`
+# keeps it; `docker compose down -v` DELETES it.
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-bewerbung}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-bewerbung_pw}
+      POSTGRES_DB: ${POSTGRES_DB:-bewerbung}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-bewerbung} -d ${POSTGRES_DB:-bewerbung}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    # Uncomment to reach Postgres from the host (e.g. for `npm start` locally):
+    # ports:
+    #   - "5432:5432"
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    # Brings in JWT_SECRET, ENCRYPTION_KEY, LLM_PROVIDER/MODEL/API_KEY, COOKIE_SECURE from .env
+    env_file:
+      - .env
+    environment:
+      # These override anything in .env for the containerized run:
+      PORT: 3000
+      NODE_ENV: production
+      DATABASE_URL: postgresql://${POSTGRES_USER:-bewerbung}:${POSTGRES_PASSWORD:-bewerbung_pw}@db:5432/${POSTGRES_DB:-bewerbung}?schema=public
+    ports:
+      - "${PORT:-3000}:3000"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3
+
+volumes:
+  pgdata:
