@@ -148,7 +148,7 @@ docker compose up --build    # → http://localhost:3000
 - **Graceful shutdown** — on `SIGTERM`/`SIGINT` the HTTP server stops accepting new connections, in-flight requests finish, then the DB pool disconnects (with a 10s force-exit fallback).
 - **Compression** — gzip/deflate via `compression` middleware.
 - **Docker** — the app container runs as a non-root user and has a `HEALTHCHECK` against `/api/health`; `docker-compose.yml` wires the same healthcheck for the `app` service.
-- **Tests** — `npm test` runs the Node built-in test runner over `test/*.test.js` (crypto round-trip, LLM response parsing, AI-key resolution).
+- **Tests** — `npm test` runs the Node built-in test runner (auto-discovers `test/*.test.js`) (crypto round-trip, LLM response parsing, AI-key resolution).
 
 ---
 
