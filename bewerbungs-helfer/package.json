@@ -15,7 +15,7 @@
     "setup": "prisma generate && prisma migrate deploy",
     "set-password": "node scripts/set-password.js",
     "test-email": "node scripts/test-email.js",
-    "test": "node --test"
+    "test": "node --test test/*.test.js"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
