@@ -1,0 +1,6 @@
+<linker>
+  <!-- ILLink drops X509Certificate2Collection.GetEnumerator, which Kestrel needs at startup (TypeLoadException) -->
+  <assembly fullname="System.Security.Cryptography">
+    <type fullname="System.Security.Cryptography.X509Certificates.X509Certificate2Collection" preserve="all" />
+  </assembly>
+</linker>

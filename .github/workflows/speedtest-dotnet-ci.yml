@@ -1,0 +1,37 @@
+name: speedtest-dotnet CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'speedtest-dotnet/**'
+      - '.github/workflows/speedtest-dotnet-*.yml'
+  pull_request:
+    paths:
+      - 'speedtest-dotnet/**'
+      - '.github/workflows/speedtest-dotnet-*.yml'
+
+defaults:
+  run:
+    working-directory: speedtest-dotnet
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Publish (trimmed single file)
+        run: dotnet publish -c Release -r linux-x64 -o dist
+
+      - name: Smoke test
+        run: |
+          ./dist/speedtest 8080 &
+          for i in $(seq 1 30); do curl -sf localhost:8080/api/ping && break; sleep 1; done
+          test "$(curl -s -o /dev/null -w '%{size_download}' 'localhost:8080/api/download?size=12345')" = "12345"
+          head -c 5000000 /dev/zero | curl -sf -X POST --data-binary @- localhost:8080/api/upload | grep -q '"bytes":5000000'
+          curl -sf localhost:8080/ | grep -q '<title>Speedtest</title>'

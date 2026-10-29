@@ -1,0 +1,118 @@
+name: speedtest-dotnet release
+
+on:
+  push:
+    tags:
+      - 'speedtest-dotnet/v*'
+
+permissions:
+  contents: write
+  packages: write
+
+defaults:
+  run:
+    working-directory: speedtest-dotnet
+
+jobs:
+  build:
+    name: Build ${{ matrix.rid }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - { os: linux,   arch: amd64, rid: linux-x64 }
+          - { os: linux,   arch: arm64, rid: linux-arm64 }
+          - { os: darwin,  arch: amd64, rid: osx-x64 }
+          - { os: darwin,  arch: arm64, rid: osx-arm64 }
+          - { os: windows, arch: amd64, rid: win-x64 }
+          - { os: windows, arch: arm64, rid: win-arm64 }
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Publish
+        run: |
+          VERSION="${GITHUB_REF_NAME##*/v}"
+          dotnet publish -c Release -r ${{ matrix.rid }} -p:Version="$VERSION" -o publish
+          OUTPUT="speedtest-${{ matrix.os }}-${{ matrix.arch }}"
+          BIN="speedtest"
+          if [ "${{ matrix.os }}" = "windows" ]; then
+            OUTPUT="${OUTPUT}.exe"
+            BIN="${BIN}.exe"
+          fi
+          mkdir -p dist
+          cp "publish/${BIN}" "dist/${OUTPUT}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: speedtest-${{ matrix.os }}-${{ matrix.arch }}
+          path: speedtest-dotnet/dist/*
+
+  release:
+    name: GitHub release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create checksums
+        working-directory: dist
+        run: sha256sum * > checksums.txt
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
+
+  docker:
+    name: Docker image
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: docker-context
+          merge-multiple: true
+
+      - name: Prepare Docker context
+        working-directory: .
+        run: |
+          cp speedtest-dotnet/Dockerfile docker-context/Dockerfile
+          chmod +x docker-context/speedtest-linux-*
+          echo "VERSION=${GITHUB_REF_NAME##*/v}" >> "$GITHUB_ENV"
+
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/speedtest-dotnet
+          tags: |
+            type=semver,pattern={{version}},value=${{ env.VERSION }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ env.VERSION }}
+            type=sha
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: docker-context
+          file: docker-context/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
