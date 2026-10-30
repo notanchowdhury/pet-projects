@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="page">
+  <header class="page-header">
+    <div>
+      <h1>My Courses</h1>
+      <p class="muted">Manage and track your video course progress</p>
+    </div>
+    <button class="btn btn-primary" data-action="add-course">+ Add Course</button>
+  </header>
+
+  {% if not courses %}
+  <section class="empty-state">
+    <h2>No courses yet</h2>
+    <p class="muted">Add your first course to start tracking your progress</p>
+    <button class="btn btn-primary" data-action="add-course">+ Add Your First Course</button>
+  </section>
+  {% else %}
+  <section class="course-grid">
+    {% for course in courses %}
+    <article class="card course-card">
+      <div class="course-card-head">
+        <div class="course-card-text">
+          <h2 class="clamp-2" title="{{ course.name }}">{{ course.name }}</h2>
+          <p class="muted small clamp-2" title="{{ course.path }}">
+            {{ "Local files (this browser)" if course.type == "client" else course.path }}
+          </p>
+        </div>
+        <div class="icon-buttons">
+          <button class="btn btn-ghost btn-icon" title="Rename" data-action="edit-course"
+                  data-id="{{ course.id }}" data-name="{{ course.name }}">&#9998;</button>
+          <button class="btn btn-ghost btn-icon danger" title="Delete" data-action="delete-course"
+                  data-id="{{ course.id }}" data-name="{{ course.name }}">&times;</button>
+        </div>
+      </div>
+
+      <div class="progress-row small">
+        <span class="muted">Progress</span>
+        <strong>{{ course.completionPercentage }}%</strong>
+      </div>
+      <div class="progress"><div class="progress-bar green" style="width: {{ course.completionPercentage }}%"></div></div>
+
+      <div class="stats small muted">
+        <span>&#9654; {{ course.totalVideos }} videos</span>
+        <span>&#10003; {{ course.completedVideos }} completed</span>
+      </div>
+
+      <a class="btn btn-primary btn-block" href="/course/{{ course.id }}">
+        {{ "Start Course" if course.completedVideos == 0 else "Continue Learning" }}
+      </a>
+    </article>
+    {% endfor %}
+  </section>
+  {% endif %}
+</main>
+
+<dialog id="add-dialog" class="dialog">
+  <h2>Add New Course</h2>
+  <p class="muted small">Add a new video course to track your learning progress.</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-tab="client" id="tab-client">Local Files</button>
+    <button class="tab" role="tab" data-tab="server">Server Path</button>
+  </div>
+
+  <form id="client-form" class="tab-panel" data-panel="client">
+    <p class="muted small">
+      Select a local folder of videos. Files are copied into this browser's storage, so this works even when the
+      app runs on another machine.
+    </p>
+    <p class="warning small" id="fs-unsupported" hidden>
+      Your browser doesn't support the File System Access API. Please use Chrome, Edge or Opera.
+    </p>
+    <label>Course Name
+      <input name="name" placeholder="e.g., Docker Fundamentals" />
+    </label>
+    <label>Course Directory
+      <button type="button" class="btn btn-outline btn-block align-left" id="pick-directory">Select Directory</button>
+    </label>
+    <div id="found-videos" hidden>
+      <span class="label" id="found-count"></span>
+      <div class="file-preview" id="file-preview"></div>
+    </div>
+    <p class="error" data-error></p>
+    <div class="dialog-actions">
+      <button type="button" class="btn btn-outline" data-action="close">Cancel</button>
+      <button type="submit" class="btn btn-primary" disabled>Add Course</button>
+    </div>
+  </form>
+
+  <form id="server-form" class="tab-panel" data-panel="server">
+    <p class="muted small">Add a course from a directory on the machine where this app is running.</p>
+    <label>Course Name
+      <input name="name" placeholder="e.g., Docker Fundamentals" />
+    </label>
+    <label>Course Directory Path
+      <input name="path" placeholder="e.g., C:\Users\me\Downloads\Docker-Course" />
+    </label>
+    <p class="error" data-error></p>
+    <div class="dialog-actions">
+      <button type="button" class="btn btn-outline" data-action="close">Cancel</button>
+      <button type="submit" class="btn btn-primary">Add Course</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="edit-dialog" class="dialog dialog-sm">
+  <form id="edit-form">
+    <h2>Edit Course</h2>
+    <p class="muted small">Update the course name.</p>
+    <label>Course Name
+      <input name="name" />
+    </label>
+    <p class="error" data-error></p>
+    <div class="dialog-actions">
+      <button type="button" class="btn btn-outline" data-action="close">Cancel</button>
+      <button type="submit" class="btn btn-primary">Update Course</button>
+    </div>
+  </form>
+</dialog>
+{% endblock %}
+
+{% block scripts %}
+<script type="module" src="{{ url_for('static', path='js/courses.js') }}"></script>
+{% endblock %}

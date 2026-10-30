@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}{{ course.name }} - Video Course Tracker{% endblock %}
+
+{% block content %}
+<div class="course-layout">
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <h1>{{ course.name }}</h1>
+      <div class="small strong" id="course-percent"></div>
+      <div class="progress"><div class="progress-bar purple" id="course-progress"></div></div>
+      <div class="xsmall muted" id="course-count"></div>
+    </div>
+    <nav class="sidebar-list" id="video-list"></nav>
+  </aside>
+
+  <main class="player-area">
+    <header class="topbar">
+      <a class="btn btn-ghost" href="/">&larr; Back to Courses</a>
+      <h2>{{ course.name }}</h2>
+    </header>
+
+    <section id="player" class="player" hidden>
+      <div class="player-head">
+        <span class="badge" id="video-section" hidden></span>
+        <h1 id="video-title"></h1>
+        <div class="small muted" id="video-time">0:00 / 0:00</div>
+      </div>
+
+      <div class="video-frame">
+        <video id="video" controls preload="metadata"></video>
+        <p class="video-error" id="video-error" hidden></p>
+      </div>
+
+      <div class="controls">
+        <div class="control-row">
+          <button class="btn btn-outline btn-sm" id="prev-btn">&lsaquo; Previous</button>
+          <button class="btn btn-outline btn-sm" id="next-btn">Next &rsaquo;</button>
+          <button class="btn btn-outline btn-sm" id="fullscreen-btn">Fullscreen</button>
+          <div class="speed" id="speed-buttons">
+            <span class="small muted">Speed:</span>
+          </div>
+          <button class="btn btn-outline btn-sm" id="notes-toggle">Video Notes</button>
+        </div>
+
+        <div class="card notes" id="notes-panel" hidden>
+          <h3>Video Notes</h3>
+          <textarea id="notes" placeholder="Add your notes about this video..."></textarea>
+          <button class="btn btn-primary btn-sm" id="save-notes" disabled>Notes Saved</button>
+        </div>
+
+        <div class="center">
+          <button class="btn btn-complete" id="complete-btn">Complete and Continue &rarr;</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="empty-state" id="no-videos" hidden>
+      <h2>No videos found</h2>
+      <p class="muted">Please check your course directory.</p>
+    </section>
+  </main>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script id="course-data" type="application/json">{{ {"course": course, "videos": videos} | tojson }}</script>
+<script type="module" src="{{ url_for('static', path='js/course.js') }}"></script>
+{% endblock %}
