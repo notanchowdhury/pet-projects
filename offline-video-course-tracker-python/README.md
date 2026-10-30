@@ -4,6 +4,16 @@ Track your progress through video courses you already have on disk: pick a folde
 
 This is a Python port of my earlier Next.js app. It keeps the same JSON API and the same SQLite schema, so an existing `data/video_progress.db` works as-is.
 
+## Screenshots
+
+**My Courses**: every course with its progress.
+
+![Course list with three courses at 50%, 100% and 0% progress](docs/screenshots/courses.png)
+
+**Course player**: sections from subfolders, completed videos ticked, the resume position of the current video, notes and playback controls.
+
+![Course player with a sidebar of sections and videos, and the video player](docs/screenshots/course-player.png)
+
 ## Features
 
 - **Two kinds of course**
