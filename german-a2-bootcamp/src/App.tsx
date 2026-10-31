@@ -30,6 +30,9 @@ const App = () => (
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <footer className="border-t py-6 text-center text-sm text-muted-foreground">
+          German A2 Bootcamp · Built by Notan Chowdhury
+        </footer>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

@@ -1,19 +1,19 @@
-name: a1-wortschatz-meister CI
+name: german-a2-bootcamp CI
 
 on:
   push:
     branches: [main]
     paths:
-      - 'a1-wortschatz-meister/**'
-      - '.github/workflows/a1-wortschatz-meister-*.yml'
+      - 'german-a2-bootcamp/**'
+      - '.github/workflows/german-a2-bootcamp-*.yml'
   pull_request:
     paths:
-      - 'a1-wortschatz-meister/**'
-      - '.github/workflows/a1-wortschatz-meister-*.yml'
+      - 'german-a2-bootcamp/**'
+      - '.github/workflows/german-a2-bootcamp-*.yml'
 
 defaults:
   run:
-    working-directory: a1-wortschatz-meister
+    working-directory: german-a2-bootcamp
 
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-          cache-dependency-path: a1-wortschatz-meister/package-lock.json
+          cache-dependency-path: german-a2-bootcamp/package-lock.json
 
       - run: npm ci
       - run: npm run lint

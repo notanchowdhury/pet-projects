@@ -1,4 +1,4 @@
-# A1 Wortschatz Meister: A2 in 30 Days
+# German A2 Bootcamp
 
 A German study app with a strict 30-day plan to reach A2, plus the full A1–B2 course vocabulary.
 
@@ -42,3 +42,7 @@ src/
 ## Stack
 
 Vite, React, TypeScript, Tailwind CSS, shadcn/ui, jsPDF.
+
+## Author
+
+**Notan Chowdhury**
